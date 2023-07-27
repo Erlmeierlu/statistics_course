@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.54">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Modern Statistics for Modern Biology - 1&nbsp; Generative Models for Discrete Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./imgs/msmb-favicon.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="msmb.css">
+<meta property="og:title" content="Modern Statistics for Modern Biology - 1&nbsp; Generative Models for Discrete Data">
+<meta property="og:description" content="If you are a biologist and want to get the best out of the powerful methods of modern computational statistics, this is your book.">
+<meta property="og:image" content="https://www.huber.embl.de/msmb-quarto/imgs/MSFMB-Cover2-cropped.jpg">
+<meta property="og:site-name" content="Modern Statistics for Modern Biology">
+<meta name="twitter:title" content="Modern Statistics for Modern Biology - 1&nbsp; Generative Models for Discrete Data">
+<meta name="twitter:description" content="If you are a biologist and want to get the best out of the powerful methods of modern computational statistics, this is your book.">
+<meta name="twitter:image" content="https://www.huber.embl.de/msmb-quarto/imgs/MSFMB-Cover2-cropped.jpg">
+<meta name="twitter:card" content="summary">
+<script type="text/javascript">
+  var _paq = _paq || [];
+  
+  // Call disableCookies before calling trackPageView 
+  _paq.push(['disableCookies']);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u='//tr-denbi.embl.de/heimdall/';
+    _paq.push(['setTrackerUrl', u+'p.php']);
+    _paq.push(['setSiteId', '26']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'p.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Modern Statistics for Modern Biology</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-chapters" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Chapters</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-chapters">    
+        <li>
+    <a class="dropdown-item" href="./index.html" rel="" target="">
+ <span class="dropdown-text">Home</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./00-chap.html" rel="" target="">
+ <span class="dropdown-text">Introduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./01-chap.html" rel="" target="">
+ <span class="dropdown-text">Generative Models for Discrete Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./02-chap.html" rel="" target="">
+ <span class="dropdown-text">Statistical Modeling</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./03-chap.html" rel="" target="">
+ <span class="dropdown-text">High Quality Graphics in R</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./04-chap.html" rel="" target="">
+ <span class="dropdown-text">Mixture Models</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./05-chap.html" rel="" target="">
+ <span class="dropdown-text">Clustering</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./06-chap.html" rel="" target="">
+ <span class="dropdown-text">Testing</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./07-chap.html" rel="" target="">
+ <span class="dropdown-text">Multivariate Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./08-chap.html" rel="" target="">
+ <span class="dropdown-text">High-Throughput Count Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./09-chap.html" rel="" target="">
+ <span class="dropdown-text">Multivariate methods for heterogeneous data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./10-chap.html" rel="" target="">
+ <span class="dropdown-text">Networks and Trees</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./11-chap.html" rel="" target="">
+ <span class="dropdown-text">Image data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./12-chap.html" rel="" target="">
+ <span class="dropdown-text">Supervised Learning</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./13-chap.html" rel="" target="">
+ <span class="dropdown-text">Design of High Throughput Experiments and their Analyses</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./14-chap.html" rel="" target="">
+ <span class="dropdown-text">Statistical Concordance</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./15-chap.html" rel="" target="">
+ <span class="dropdown-text">Acknowledgements</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./16-chap.html" rel="" target="">
+ <span class="dropdown-text">References</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Generative Models for Discrete Data</span></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Sections</h2>
+   
+  <ul class="collapse">
+  <li><a href="#sec-generative-intro" id="toc-sec-generative-intro" class="nav-link active" data-scroll-target="#sec-generative-intro"><span class="header-section-number">1.1</span> Goals for this chapter</a></li>
+  <li><a href="#a-real-example" id="toc-a-real-example" class="nav-link" data-scroll-target="#a-real-example"><span class="header-section-number">1.2</span> A real example</a></li>
+  <li><a href="#using-discrete-probability-models" id="toc-using-discrete-probability-models" class="nav-link" data-scroll-target="#using-discrete-probability-models"><span class="header-section-number">1.3</span> Using discrete probability models</a></li>
+  <li><a href="#sec-generative-multinomial" id="toc-sec-generative-multinomial" class="nav-link" data-scroll-target="#sec-generative-multinomial"><span class="header-section-number">1.4</span> Multinomial distributions: the case of DNA</a></li>
+  <li><a href="#summary-of-this-chapter" id="toc-summary-of-this-chapter" class="nav-link" data-scroll-target="#summary-of-this-chapter"><span class="header-section-number">1.5</span> Summary of this chapter</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">1.6</span> Further reading</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">1.7</span> Exercises</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-generative" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Generative Models for Discrete Data</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/Pile-ou-face_ec81963de82638c16f662895b26c269d">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/Pile_ou_face.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div></div></div>
+<p>In molecular biology, many situations involve counting events: how many codons use a certain spelling, how many reads of DNA match a reference, how many CG digrams are observed in a DNA sequence. These counts give us <em>discrete</em> variables, as opposed to quantities such as mass and intensity that are measured on <em>continuous</em> scales.</p>
+<p>If we know the rules that the mechanisms under study follow, even if the outcomes are random, we can generate the probabilities of any events we are interested in by computations and standard probability laws. This is a <em>top-down</em> approach based on deduction and our knowledge of how to manipulate probabilities. In <a href="02-chap.html" class="quarto-xref"><span>Chapter&nbsp;2</span></a>, you will see how to combine this with data-driven (<em>bottom-up</em>) statistical modeling.</p>
+<section id="sec-generative-intro" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="sec-generative-intro"><span class="header-section-number">1.1</span> Goals for this chapter</h2>
+<p>In this chapter we will:</p>
+<ul>
+<li><p>Learn how to obtain the probabilities of all possible outcomes from a given model and see how we can compare the theoretical frequencies with those observed in real data.</p></li>
+<li><p>Explore a complete example of how to use the Poisson distribution to analyse data on epitope detection.</p></li>
+<li><p>See how we can experiment with the most useful generative models for discrete data: Poisson, binomial, multinomial.</p></li>
+<li><p>Use the R functions for computing probabilities and counting rare events.</p></li>
+<li><p>Generate random numbers from specified distributions.</p></li>
+</ul>
+</section>
+<section id="a-real-example" class="level2 page-columns page-full" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="a-real-example"><span class="header-section-number">1.2</span> A real example</h2>
+<div class="page-columns page-full"><p>Let’s dive into an example where we have a probability model for the data generating process. Our model says that mutations along the genome of HIV (Human Immunodeficiency Virus) occur with a rate of <span class="math inline">\(5 \times 10^{-4}\)</span> per nucleotide per replication cycle. The rate is the same at each nucleotide position, and mutations at one position happen independently of what happens at other positions<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The genome size of HIV is about <span class="math inline">\(10^4=10,000\)</span> nucleotides, thus, after one cycle, the total number of mutations will follow a <strong>Poisson</strong> distribution<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> with rate <span class="math inline">\(5 \times 10^{-4} \times 10^4 = 5\)</span>. What does that tell us?</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;In practice, and strictly speaking, complete and utter independence will rarely hold in reality, if you look close enough. Thus, what modellers usually mean with such assertions is that any possible correlations or dependencies are so weak and rare that ignoring them is a good enough approximation.</p></li><li id="fn2"><p><sup>2</sup>&nbsp;We will give more details later about this type of probability distribution</p></li></div></div>
+<p>This probability model predicts that the number of mutations over one replication cycle will be close to 5, and that the variability of this estimate is <span class="math inline">\(\sqrt{5}\)</span> (the standard error). We now have baseline reference values for both the number of mutations we expect to see in a typical HIV strain and its variability.</p>
+<div class="page-columns page-full"><p>In fact, we can deduce even more detailed information. If we want to know how often 3 mutations could occur under the Poisson(5) model, we can use an R function to generate the probability of seeing <span class="math inline">\(x=3\)</span> events, taking the value of the <strong>rate parameter</strong> of the Poisson distribution, called lambda (<span class="math inline">\(\lambda\)</span>), to be <span class="math inline">\(5\)</span>.<br>
+</p><div class="no-row-height column-margin column-container"><span class="">Greek letters such as <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\mu\)</span> often denote important parameters that characterize the probability distributions we use.</span></div></div>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/dpois1_4d23e23ed5a753effc9fada40208b36f">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dpois</span>(<span class="at">x =</span> <span class="dv">3</span>, <span class="at">lambda =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1403739</code></pre>
+</div>
+</div>
+<p>This says the chance of seeing exactly three events is around 0.14, or about 1 in 7.</p>
+<p>If we want to generate the probabilities of all values from 0 to 12, we do not need to write a loop. We can simply set the first argument to be the <strong>vector</strong> of these 13 values, using R’s sequence operator, the colon “<code>:</code>”. We can see the probabilities by plotting them (<a href="#fig-Poisson5" class="quarto-xref">Figure&nbsp;<span>1.1</span></a>). As with this figure, most figures in the margins of this book are created by the code shown in the text.</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/unnamed-chunk-66_86d0b09e5f53952d207c3f5df34a872e">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/devil.png" class="img-fluid figure-img" width="123"></p>
+<figcaption class="figure-caption">Note how the output from R is formatted: the first line begins with the first item in the vector, hence the [1], and the second line begins with the 9th item, hence the [9]. This helps you keep track of elements in long vectors. The term <em>vector</em> is R parlance for an ordered list of elements of the same type (in this case, numbers).</figcaption>
+</figure>
+</div>
+</div></div></div>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/fig-Poisson5_93bf5260c8e44ae9b28514db04f1d0da">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span><span class="sc">:</span><span class="dv">12</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  0  1  2  3  4  5  6  7  8  9 10 11 12</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dpois</span>(<span class="at">x =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">lambda =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 0.0067 0.0337 0.0842 0.1404 0.1755 0.1755 0.1462 0.1044 0.0653 0.0363
+[11] 0.0181 0.0082 0.0034</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">dpois</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">12</span>, <span class="dv">5</span>), <span class="at">names.arg =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-Poisson5" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-chap_files/figure-html/fig-Poisson5-1.png" class="img-fluid figure-img" width="320"></p>
+<figcaption class="figure-caption">Figure&nbsp;1.1: Probabilities of seeing 0,1,2,…,12 mutations, as modeled by the Poisson(5) distribution. The plot shows that we will often see 4 or 5 mutations but rarely as many as 12. The distribution continues to higher numbers (<span class="math inline">\(13,...\)</span>), but the probabilities will be successively smaller, and here we don’t visualize them.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>Mathematical theory tells us that the Poisson probability of seeing the value <span class="math inline">\(x\)</span> is given by the formula <span class="math inline">\(e^{-\lambda} \lambda^x / x!\)</span>. In this book, we’ll discuss theory from time to time, but give preference to displaying concrete numeric examples and visualizations like <a href="#fig-Poisson5" class="quarto-xref">Figure&nbsp;<span>1.1</span></a>.</p>
+<p>The Poisson distribution is a good model for rare events such as mutations. Other useful probability models for <strong>discrete events</strong> are the Bernoulli, binomial and multinomial distributions. We will explore these models in this chapter.</p>
+</section>
+<section id="using-discrete-probability-models" class="level2 page-columns page-full" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="using-discrete-probability-models"><span class="header-section-number">1.3</span> Using discrete probability models</h2>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/unnamed-chunk-67_d2705d8d226df8ed7e775d61e2e27c73">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/devil.png" class="img-fluid figure-img" width="123"></p>
+<figcaption class="figure-caption">Think of a categorical variable as having different alternative values. These are the levels, similar to the different alternatives at a gene locus: <em>alleles</em>.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>A point mutation can either occur or not; it is a binary event. The two possible outcomes (yes, no) are called the <strong>levels</strong> of the categorical variable.</p>
+<p>Not all events are binary. For example, the genotypes in a diploid organism can take three levels (AA, Aa, aa).</p>
+<p>Sometimes the number of levels in a categorical variable is very large; examples include the number of different types of bacteria in a biological sample (hundreds or thousands) and the number of codons formed of 3 nucleotides (64 levels).</p>
+<div class="page-columns page-full"><p>When we measure a categorical variable on a sample, we often want to tally the frequencies of the different levels in a vector of counts. R has a special encoding for categorical variables and calls them <strong>factors</strong><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Here we capture the different blood genotypes for 19 subjects in a vector which we tabulate.</p><div class="no-row-height column-margin column-container"><li id="fn3"><p><sup>3</sup>&nbsp;R makes sure that the factor variable will accept no other, “illegal” values, and this is useful for keeping your calculations safe.</p></li></div></div>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/unnamed-chunk-68_53a0de31ca38cb1412718ec37bb1aaba">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/devil.png" class="img-fluid figure-img" width="123"></p>
+<figcaption class="figure-caption"><code>c()</code> is one of the most basic functions. It collates elements of the same type into a vector. In the code shown here, the elements of <code>genotype</code> are character strings.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/genotype1_0523702fbbabee2b195b49452531211b">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>genotype <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"AA"</span>,<span class="st">"AO"</span>,<span class="st">"BB"</span>,<span class="st">"AO"</span>,<span class="st">"OO"</span>,<span class="st">"AO"</span>,<span class="st">"AA"</span>,<span class="st">"BO"</span>,<span class="st">"BO"</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>             <span class="st">"AO"</span>,<span class="st">"BB"</span>,<span class="st">"AO"</span>,<span class="st">"BO"</span>,<span class="st">"AB"</span>,<span class="st">"OO"</span>,<span class="st">"AB"</span>,<span class="st">"BB"</span>,<span class="st">"AO"</span>,<span class="st">"AO"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(genotype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>genotype
+AA AB AO BB BO OO 
+ 2  2  7  3  3  2 </code></pre>
+</div>
+</div>
+<p>On creating a <em>factor</em>, R automatically detects the levels. You can access the levels with the <code>levels</code> function.</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/unnamed-chunk-69_d25f9902a2cf36afdc7e73ad2fd614c8">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/devil.png" class="img-fluid figure-img" width="123"></p>
+<figcaption class="figure-caption">It is not obvious from the output of the <code>table</code> function that the input was a factor; however if there had been another level with no instances, the table would also have contained that level, with a zero count.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/genotype2_2c5cbcfcbfdfac0632d2a68d6fd336e1">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>genotypeF <span class="ot">=</span> <span class="fu">factor</span>(genotype)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(genotypeF)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "AA" "AB" "AO" "BB" "BO" "OO"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(genotypeF)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>genotypeF
+AA AB AO BB BO OO 
+ 2  2  7  3  3  2 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="prp-generative-factor" class="theorem proposition">
+<p><span class="theorem-title"><strong>Question 1.1 </strong></span>What if you want to create a <em>factor</em> that has some levels not yet in your data?</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Look at the manual page of the <code>factor</code> function.</p>
+</div>
+</div>
+</div>
+<p>If the order in which the data are observed doesn’t matter, we call the random variable <strong>exchangeable</strong>. In that case, all the information available in the factor is summarized by the counts of the factor levels. We then say that the vector of frequencies is <strong>sufficient</strong> to capture all the relevant information in the data, thus providing an effective way of compressing the data.</p>
+<section id="sec-generative-bernoulli" class="level3 page-columns page-full" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="sec-generative-bernoulli"><span class="header-section-number">1.3.1</span> Bernoulli trials</h3>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/fig-twoballs_7e8745c062d0781c4307c3c7525a523e">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-twoballs" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="imgs/BallsinBoxes2.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;1.2: Two possible events with unequal probabilities. We model this by a Bernoulli distribution with probability parameter <span class="math inline">\(p=2/3\)</span>.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>Tossing a coin has two possible outcomes. This simple experiment, called a Bernoulli trial, is modeled using a so-called Bernoulli random variable. Understanding this building block will take you surprisingly far. We can use it to build more complex models.</p>
+<p>Let’s try a few experiments to see what some of these random variables look like. We use special R functions tailored to generate outcomes for each type of distribution. They all start with the letter <code>r</code>, followed by a specification of the model, here <code>rbinom</code>, where <code>binom</code> is the abbreviation used for binomial.</p>
+<p>Suppose we want to simulate a sequence of 15 fair coin tosses. To get the outcome of 15 Bernoulli trials with a probability of success equal to 0.5 (a fair coin), we write</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/rbinom1_8b3edd0e698c7d080498a737e7f202dc">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rbinom</span>(<span class="dv">15</span>, <span class="at">prob =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1 1 1 0 1 0 1 0 1 0 1 1 0 0 1</code></pre>
+</div>
+</div>
+<div class="page-columns page-full"><p>We use the <code>rbinom</code> function with a specific set of <strong>parameters</strong><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>: the first parameter is the number of trials we want to observe; here we chose 15. We designate by <code>prob</code> the probability of success. By <code>size=1</code> we declare that each individual trial consists of just one single coin toss.</p><div class="no-row-height column-margin column-container"><li id="fn4"><p><sup>4</sup>&nbsp;For R functions, parameters are also called <strong>argument</strong>s.</p></li></div></div>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="prp-generative-rbinom" class="theorem proposition">
+<p><span class="theorem-title"><strong>Question 1.2 </strong></span>Repeat this function call a number of times. Why isn’t the answer always the same?</p>
+</div>
+</div>
+</div>
+<div class="page-columns page-full"><p>Success and failure can have unequal probabilities in a Bernoulli trial, as long as the probabilities sum to one<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. To simulate twelve trials of throwing a ball into the two boxes as shown in <a href="#fig-twoballs" class="quarto-xref">Figure&nbsp;<span>1.2</span></a>, with probability of falling in the right-hand box <span class="math inline">\(\frac{2}{3}\)</span> and in the left-hand box <span class="math inline">\(\frac{1}{3}\)</span>, we write</p><div class="no-row-height column-margin column-container"><li id="fn5"><p><sup>5</sup>&nbsp;We call such events <strong>complementary</strong>.</p></li></div></div>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/rbinom2_524a1aca7557b0c4f991a6a44370eaf0">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rbinom</span>(<span class="dv">12</span>, <span class="at">prob =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">size =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1 1 1 0 1 0 0 1 1 1 0 1</code></pre>
+</div>
+</div>
+<p>The 1 indicates success, meaning that the ball fell in the right-hand box, 0 means the ball fell in the left-hand box.</p>
+</section>
+<section id="sec-generative-binomial" class="level3 page-columns page-full" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="sec-generative-binomial"><span class="header-section-number">1.3.2</span> Binomial success counts</h3>
+<div class="page-columns page-full"><p>If we only care how many balls go in the right-hand box, then the order of the throws doesn’t matter<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>, and we can get this number by just taking the sum of the cells in the output vector. Therefore, instead of the binary vector we saw above, we only need to report a single number. In R, we can do this using one call to the <code>rbinom</code> function with the parameter <code>size</code> set to 12. </p><div class="no-row-height column-margin column-container"><li id="fn6"><p><sup>6</sup>&nbsp;The exchangeability property.</p></li><span class="">Two outcomes and a size of 1 or more makes it a binomial trial. If the size is 1, then this is the special case of the Bernoulli trial.</span></div></div>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/rbinom3_a645a74cc9a75154966384c664c0e997">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="at">prob =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">size =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9</code></pre>
+</div>
+</div>
+<div class="page-columns page-full"><p>This output tells us how many of the twelve balls fell into the right-hand box (the outcome that has probability 2/3). We use a random two-box model when we have only two possible outcomes such as heads or tails, success or failure, CpG or non-CpG, M or F, Y = pyrimidine or R = purine, diseased or healthy, true or false. We only need the probability of “success” <span class="math inline">\(p\)</span>, because “failure” (the <em>complementary</em> event) will occur with probability <span class="math inline">\(1-p\)</span>. When looking at the result of several such trials, if they are exchangeable<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>, we record only the number of successes. Therefore, SSSSSFSSSSFFFSF is summarized as (#Successes=10, #Failures=5), or as <span class="math inline">\(x=10\)</span>, <span class="math inline">\(n=15\)</span>.</p><div class="no-row-height column-margin column-container"><li id="fn7"><p><sup>7</sup>&nbsp;One situation in which trials are exchangeable is if they are <strong>independent</strong> of each other.</p></li></div></div>
+<p>The number of successes in 15 Bernoulli trials with a probability of success of 0.3 is called a <strong>binomial</strong> random variable or a random variable that follows the <span class="math inline">\(B(15,0.3)\)</span> distribution. To generate samples, we use a call to the <code>rbinom</code> function with the number of trials set to 15:</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/unnamed-chunk-70_e7185923bb7b3c658644a5d7dd9c115c">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/devil.png" class="img-fluid figure-img" width="123"></p>
+<figcaption class="figure-caption">What does <code>set.seed</code> do here?</figcaption>
+</figure>
+</div>
+</div></div></div>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/rbinom4_f96f08eb2d1e786e4602f1a8bef75925">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">235569515</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.3</span>, <span class="at">size =</span> <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="prp-generative-rbinomcommon" class="theorem proposition">
+<p><span class="theorem-title"><strong>Question 1.3 </strong></span>Repeat this function call ten times. What seems to be the most common outcome?</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The most frequent value is 4. In fact, the theoretical proportion of times that we expect 4 to appear is the value of the probability that <span class="math inline">\(X=4\)</span> if <span class="math inline">\(X\)</span> follows <span class="math inline">\(B(15, 0.3)\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="page-columns page-full"><p>The complete <strong>probability mass distribution</strong> is available by typing: </p><div class="no-row-height column-margin column-container"><span class="">We use the function <code>round</code> to keep the number of printed decimal digits down to 2.</span></div></div>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/dbinom_68e8e48d3d82bfb4532ddc519deaff51">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>probabilities <span class="ot">=</span> <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, <span class="at">prob =</span> <span class="fl">0.3</span>, <span class="at">size =</span> <span class="dv">15</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(probabilities, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 0.00 0.03 0.09 0.17 0.22 0.21 0.15 0.08 0.03 0.01 0.00 0.00 0.00 0.00 0.00
+[16] 0.00</code></pre>
+</div>
+</div>
+<p>We can produce a bar plot of this distribution, shown in <a href="#fig-binombarplot" class="quarto-xref">Figure&nbsp;<span>1.3</span></a>.</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/fig-binombarplot_67e78f9db9b7b491af4ae8658d94ccdf">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(probabilities, <span class="at">names.arg =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">15</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-binombarplot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-chap_files/figure-html/fig-binombarplot-1.png" class="img-fluid figure-img" width="560"></p>
+<figcaption class="figure-caption">Figure&nbsp;1.3: Theoretical distribution of <span class="math inline">\(B(15,0.3)\)</span> . The highest bar is at <span class="math inline">\(x=4\)</span>. We have chosen to represent theoretical values in red throughout.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>The number of trials is the number we input in R as the <code>size</code> parameter and is often written <span class="math inline">\(n\)</span>, while the probability of success is <span class="math inline">\(p\)</span>. Mathematical theory tells us that for <span class="math inline">\(X\)</span> distributed as a binomial distribution with parameters <span class="math inline">\((n,p)\)</span> written <span class="math inline">\(X \sim B(n,p)\)</span>, the probability of seeing <span class="math inline">\(X=k\)</span> successes is</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/unnamed-chunk-71_02cd11dba0de5376531d2f9b7d58c82c">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/devil.png" class="img-fluid figure-img" width="123"></p>
+<figcaption class="figure-caption">Instead of <span class="math inline">\(\frac{n!}{(n-k)!k!}\)</span> we can use the special notation <span class="math inline">\({n \choose k}\)</span> as a shortcut.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p><span class="math display">\[
+\begin{aligned}
+P(X=k)
+&amp;=&amp;\frac{n\times (n-1)... (n-k+1)}{k\times(k-1)... 1}\; p^k\, (1-p)^{n-k}\\
+&amp;=&amp;\frac{n!}{(n-k)!k!}\;p^k\, (1-p)^{n-k}\\
+&amp;=&amp;{ n \choose k}\; p^k\, (1-p)^{n-k}.
+\end{aligned}
+\]</span></p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="prp-generative-whatisthe" class="theorem proposition">
+<p><span class="theorem-title"><strong>Question 1.4 </strong></span>What is the output of the formula for <span class="math inline">\(k=3\)</span>, <span class="math inline">\(p=2/3\)</span>, <span class="math inline">\(n=4\)</span>?</p>
+</div>
+</div>
+</div>
+</section>
+<section id="poisson-distributions" class="level3 page-columns page-full" data-number="1.3.3">
+<h3 data-number="1.3.3" class="anchored" data-anchor-id="poisson-distributions"><span class="header-section-number">1.3.3</span> Poisson distributions</h3>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/fig-Simeon-Poisson_b12c77f191b5f4028966b95476175956">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-Simeon-Poisson" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="imgs/Simeon_Poisson.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;1.4: Simeon Poisson, after whom the Poisson distribution is named (this is why it always has a capital letter, except in our R code). </figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>When the probability of success <span class="math inline">\(p\)</span> is small and the number of trials <span class="math inline">\(n\)</span> large, the binomial distribution <span class="math inline">\(B(n, p)\)</span> can be faithfully approximated by a simpler distribution, the <strong>Poisson distribution</strong> with rate parameter <span class="math inline">\(\lambda=np\)</span>. We already used this fact, and this distribution, in the HIV example (<a href="#fig-Poisson5" class="quarto-xref">Figure&nbsp;<span>1.1</span></a>).</p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="prp-generative-probmass" class="theorem proposition">
+<p><span class="theorem-title"><strong>Question 1.5 </strong></span>What is the probability mass distribution of observing <code>0:12</code> mutations in a genome of <span class="math inline">\(n = 10^4\)</span> nucleotides, when the probability is <span class="math inline">\(p = 5 \times 10^{-4}\)</span> per nucleotide? Is it similar when modeled by the binomial <span class="math inline">\(B(n,p)\)</span> distribution and by the Poisson<span class="math inline">\((\lambda=np)\)</span> distribution?</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Note that, unlike the binomial distribution, the Poisson no longer depends on two separate parameters <span class="math inline">\(n\)</span> and <span class="math inline">\(p\)</span>, but only on their product <span class="math inline">\(np\)</span>. As in the case of the binomial distribution, we also have a mathematical formula for computing Poisson probabilities<!--TODO: re/move this?^[We already mentioned this in @sec-generative-intro.]-->:</p>
+<p><span class="math display">\[
+P(X=k)= \frac{\lambda^k\;e^{-\lambda}}{k!}.
+\]</span></p>
+<p>For instance, let’s take <span class="math inline">\(\lambda=5\)</span> and compute <span class="math inline">\(P(X=3)\)</span>:</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/dpois2_f2ef6f7c595d50cbffd86226fb7205b6">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span><span class="sc">^</span><span class="dv">3</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="dv">5</span>) <span class="sc">/</span> <span class="fu">factorial</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1403739</code></pre>
+</div>
+</div>
+<p>which we can compare with what we computed above using <code>dpois</code>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Simulate a mutation process along 10,000 positions with a mutation rate of <span class="math inline">\(5\times10^{-4}\)</span> and count the number of mutations. Repeat this many times and plot the distribution with the <code>barplot</code> function (see <a href="#fig-gen-simpoisson" class="quarto-xref">Figure&nbsp;<span>1.5</span></a>).</p>
+</div>
+</div>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/fig-gen-simpoisson_b7cc6aff0b3bf23d856677ba174aae4e">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">5e-4</span>, <span class="at">size =</span> <span class="dv">10000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>simulations <span class="ot">=</span> <span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">300000</span>, <span class="at">prob =</span> <span class="fl">5e-4</span>, <span class="at">size =</span> <span class="dv">10000</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(simulations), <span class="at">col =</span> <span class="st">"lavender"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-gen-simpoisson" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-chap_files/figure-html/fig-gen-simpoisson-1.png" class="img-fluid figure-img" width="560"></p>
+<figcaption class="figure-caption">Figure&nbsp;1.5: Simulated distribution of B(10000, <span class="math inline">\(10^{-4}\)</span>) for 300000 simulations.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>Now we are ready to use probability calculations in a case study.</p>
+</section>
+<section id="a-generative-model-for-epitope-detection" class="level3 page-columns page-full" data-number="1.3.4">
+<h3 data-number="1.3.4" class="anchored" data-anchor-id="a-generative-model-for-epitope-detection"><span class="header-section-number">1.3.4</span> A generative model for epitope detection</h3>
+<p>When testing certain pharmaceutical compounds, it is important to detect proteins that provoke an allergic reaction. The molecular sites that are responsible for such reactions are called <strong>epitopes</strong>. The technical definition of an epitope is:</p>
+<blockquote class="blockquote">
+<p>A specific portion of a macromolecular antigen to which an antibody binds. In the case of a protein antigen recognized by a T-cell, the epitope or determinant is the peptide portion or site that binds to a Major Histocompatibility Complex (MHC) molecule for recognition by the T cell receptor (TCR).</p>
+</blockquote>
+<p>And in case you’re not so familiar with immunology: an <strong>antibody</strong> (as schematized in <a href="#fig-antibody" class="quarto-xref">Figure&nbsp;<span>1.6</span></a>) is a type of protein made by certain white blood cells in response to a foreign substance in the body, which is called the <strong>antigen</strong>.</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/fig-antibody_95baad8363ed2384028420d06ce7a041">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-antibody" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="imgs/Antibody_IgG2.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;1.6: A diagram of an antibody showing several immunoglobulin domains in color.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>An antibody binds (with more or less specificity) to its antigen. The purpose of the binding is to help destroy the antigen. Antibodies can work in several ways, depending on the nature of the antigen. Some antibodies destroy antigens directly. Others help recruit white blood cells to destroy the antigen. An epitope, also known as antigenic determinant, is the part of an antigen that is recognized by the immune system, specifically by antibodies, B cells or T cells.</p>
+<section id="elisa-error-model-with-known-parameters" class="level4 unnumbered page-columns page-full">
+<h4 class="unnumbered anchored" data-anchor-id="elisa-error-model-with-known-parameters">ELISA error model with known parameters</h4>
+<div class="page-columns page-full"><p>ELISA<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> assays are used to detect specific epitopes at different positions along a protein. Suppose the following facts hold for an ELISA array we are using:</p><div class="no-row-height column-margin column-container"><li id="fn8"><p><sup>8</sup>&nbsp;<strong>E</strong>nzyme-<strong>L</strong>inked <strong>I</strong>mmuno<strong>S</strong>orbent <strong>A</strong>ssay (<a href="http://en.wikipedia.org/wiki/ELISA">Wikipedia link ELISA</a>).</p></li></div></div>
+<ul>
+<li><p>The baseline noise level per position, or more precisely the false positive rate, is 1%. This is the probability of declaring a hit – we think we have an epitope – when there is none. We write this <span class="math inline">\(P(\text{declare epitope}|\text{no epitope})\)</span><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>.</p></li>
+<li><p>The protein is tested at 100 different positions, supposed to be independent.</p></li>
+<li><p>We are going to examine a collection of 50 patient samples.</p></li>
+</ul>
+<div class="no-row-height column-margin column-container"><li id="fn9"><p><sup>9</sup>&nbsp;The vertical bar in expressions such as <span class="math inline">\(X|Y\)</span> means “<span class="math inline">\(X\)</span> happens <em>conditional on</em> <span class="math inline">\(Y\)</span> being the case”.</p></li></div></section>
+<section id="one-patients-data" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="one-patients-data">One patient’s data</h4>
+<p>The data for one patient’s assay look like this:</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/brack100_d4bffd026142a9e85aa7f98edcad7e92">
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ [38] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ [75] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</code></pre>
+</div>
+</div>
+<p>where the 1 signifies a hit (and thus the potential for an allergic reaction), and the zeros signify no reaction at that position.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Verify by simulation that the sum of 50 independent Bernoulli variables with <span class="math inline">\(p=0.01\)</span> is –to good enough approximation– the same as a Poisson(<span class="math inline">\(0.5\)</span>) random variable.</p>
+</div>
+</div>
+</section>
+<section id="results-from-the-50-assays" class="level4 unnumbered page-columns page-full">
+<h4 class="unnumbered anchored" data-anchor-id="results-from-the-50-assays">Results from the 50 assays</h4>
+<p>We’re going to study the data for all 50 patients tallied at each of the 100 positions. If there are no allergic reactions, the false positive rate means that for one patient, each individual position has a probability of 1 in 100 of being a 1. So, after tallying 50 patients, we expect at any given position the sum of the 50 observed <span class="math inline">\((0,1)\)</span> variables to have a Poisson distribution with parameter 0.5. A typical result may look like <a href="#fig-typicalP" class="quarto-xref">Figure&nbsp;<span>1.7</span></a>. Now suppose we see actual data as shown in <a href="#fig-epitopedata" class="quarto-xref">Figure&nbsp;<span>1.8</span></a>, loaded as R object <code>e100</code> from the data file <code>e100.RData</code>.</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/fig-typicalP_0eef7d322d13f571eb948ee0bdcad5fd">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-typicalP" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-chap_files/figure-html/fig-typicalP-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption class="figure-caption">Figure&nbsp;1.7: Plot of typical data from our generative model for the background, i.,e., for the false positive hits: 100 positions along the protein, at each position the count is drawn from a Poisson(0.5) random variable.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/epitopeData_3083f10b2785bf6be71f68f30bdb7b43">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"../data/e100.RData"</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(e100, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">7</span>), <span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>, <span class="fl">100.5</span>),</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">names.arg =</span> <span class="fu">seq</span>(<span class="at">along =</span> e100), <span class="at">col =</span> <span class="st">"darkolivegreen"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/fig-epitopedata_846d6208bd439c3583dc08842ca03405">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-epitopedata" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-chap_files/figure-html/fig-epitopedata-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption class="figure-caption">Figure&nbsp;1.8: Output of the ELISA array results for 50 patients in the 100 positions.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>The spike in <a href="#fig-epitopedata" class="quarto-xref">Figure&nbsp;<span>1.8</span></a> is striking. <em>What are the chances of seeing a value as large as 7, if no epitope is present?</em><br>
+If we look for the probability of seeing a number as big as 7 (or larger) when considering one Poisson(<span class="math inline">\(0.5\)</span>) random variable, the answer can be calculated in closed form as</p>
+<p><span class="math display">\[
+P(X\geq 7)= \sum_{k=7}^\infty P(X=k).
+\]</span></p>
+<div class="page-columns page-full"><p>This is, of course, the same as <span class="math inline">\(1-P(X\leq 6)\)</span>. The probability <span class="math inline">\(P(X\leq 6)\)</span> is the so-called <strong>cumulative distribution</strong> function at 6, and R has the function <code>ppois</code> for computing it, which we can use in either of the following two ways:<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p><div class="no-row-height column-margin column-container"><li id="fn10"><p><sup>10</sup>&nbsp;Besides the convenience of not having to do the subtraction from one, the second of these computations also tends to be more accurate when the probability is small. This has to do with limitations of floating point arithmetic.</p></li></div></div>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/ppois_452e4ae01b8dd8ad2d903e282b3800e8">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">ppois</span>(<span class="dv">6</span>, <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.00238e-06</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ppois</span>(<span class="dv">6</span>, <span class="fl">0.5</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.00238e-06</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Check the manual page of <code>ppois</code> for the meaning of the <code>lower.tail</code> argument.</p>
+</div>
+</div>
+<div class="page-columns page-full"><p>We denote this number by <span class="math inline">\(\epsilon\)</span>, the Greek letter epsilon<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>. We have shown that the probability of seeing a count as large as <span class="math inline">\(7\)</span>, assuming no epitope reactions, is:</p><div class="no-row-height column-margin column-container"><li id="fn11"><p><sup>11</sup>&nbsp;Mathematicians often call small numbers (and children) <span class="math inline">\(\epsilon\)</span>s.</p></li></div></div>
+<p><span class="math display">\[
+\epsilon=P(X\geq 7)=1-P(X\leq 6)\simeq10^{-6}.
+\]</span></p>
+</section>
+<section id="extreme-value-analysis-for-the-poisson-distribution" class="level4 unnumbered page-columns page-full">
+<h4 class="unnumbered anchored" data-anchor-id="extreme-value-analysis-for-the-poisson-distribution">Extreme value analysis for the Poisson distribution</h4>
+<p>Stop! The above calculation is <em>not</em> the correct computation in this case.</p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="prp-generative-flaw" class="theorem proposition">
+<p><span class="theorem-title"><strong>Question 1.6 </strong></span>Can you spot the flaw in our reasoning if we want to compute the probability that we observe these data if there is no epitope?</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>We looked at all 100 positions, looked for the largest value and found that it was 7. Due to this selection, a value as large as 7 is more likely to occur than if we only looked at one position.</p>
+</div>
+</div>
+</div>
+<div class="page-columns page-full"><p>So instead of asking what the chances are of seeing a Poisson(0.5) as large as 7, we should ask ourselves, what are the chances that the maximum of 100 Poisson(0.5) trials is as large as 7? We use <strong>extreme value</strong> analysis here<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>. We order the data values <span class="math inline">\(x_1,x_2,... ,x_{100}\)</span> and rename them <span class="math inline">\(x_{(1)},x_{(2)},x_{(3)},... ,x_{(100)}\)</span>, so that <span class="math inline">\(x_{(1)}\)</span> denotes the smallest and <span class="math inline">\(x_{(100)}\)</span> the largest of the counts over the 100 positions. Together, <span class="math inline">\(x_{(1)},... x_{(100)}\)</span> are called the <strong>rank statistic</strong> of this sample of 100 values.</p><div class="no-row-height column-margin column-container"><li id="fn12"><p><sup>12</sup>&nbsp;Meaning that we’re interested in the behavior of the very large or very small values of a random distribution, for instance the maximum or the minimum.</p></li></div></div>
+<div class="page-columns page-full"><p>The maximum value being as large as 7 is the <strong>complementary event</strong> of having all 100 counts be smaller than or equal to 6. Two complementary events have probabilities that sum to 1. Because the positions are supposed to be independent, we can now do the computation<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>:</p><div class="no-row-height column-margin column-container"><li id="fn13"><p><sup>13</sup>&nbsp;The notation with the <span class="math inline">\(\prod\)</span> is just a compact way to write the product of a series of terms, analogous to the <span class="math inline">\(\sum\)</span> for sums.</p></li></div></div>
+<p><span class="math display">\[
+\begin{aligned}
+P(x_{(100)}\geq7)
+&amp;=&amp;1-P(x_{(100)}\leq6)\\
+&amp;=&amp;1-P(x_{(1)}\leq6)\times P(x_{(2)}\leq6)\times \cdots \times P(x_{(100)}\leq6)\\
+&amp;=&amp;1-P(x_1\leq6)\times P(x_2\leq6)\times \cdots \times P(x_{100}\leq6)\\
+&amp;=&amp;1-\prod_{i=1}^{100} P(x_i\leq6).
+\end{aligned}
+\]</span></p>
+<p>Because we suppose each of these 100 events are independent, we can use our result from above:</p>
+<p><span class="math display">\[
+\prod_{i=1}^{100} P(x_i \leq 6)=
+\left(P(x_i \leq 6)\right)^{100}=
+\left(1-\epsilon\right)^{100}.
+\]</span></p>
+</section>
+<section id="actually-computing-the-numbers" class="level4 unnumbered page-columns page-full">
+<h4 class="unnumbered anchored" data-anchor-id="actually-computing-the-numbers">Actually computing the numbers</h4>
+<p>We could just let R compute the value of this number, <span class="math inline">\(\left(1-\epsilon\right)^{100}\)</span>. For those interested in how such calculations can be shortcut through approximation, we give some details. These can be skipped on a first reading.</p>
+<p>We recall from above that <span class="math inline">\(\epsilon\simeq 10^{-6}\)</span> is much smaller than 1. To compute the value of <span class="math inline">\(\left(1-\epsilon\right)^{100}\)</span> approximately, we can use the binomial theorem and drop all “higher order” terms of <span class="math inline">\(\epsilon\)</span>, i.e., all terms with <span class="math inline">\(\epsilon^2, \epsilon^3, ...\)</span>, because they are negligibly small compared to the remaining (“leading”) terms.</p>
+<p><span class="math display">\[
+(1-\epsilon)^n = \sum_{k=0}^n {n\choose k} \, 1^{n-k} \, (-\epsilon)^k  =
+1-n\epsilon+{n\choose 2} \epsilon^2 - {n\choose 3} \epsilon^3 + ... \simeq
+1-n\epsilon \simeq 1 - 10^{-4}
+\]</span></p>
+<p>Another, equivalent, route goes by using the approximation <span class="math inline">\(e^{-\epsilon} \simeq 1-\epsilon\)</span>, which is the same as <span class="math inline">\(\log(1-\epsilon)\simeq -\epsilon\)</span>. Hence</p>
+<p><span class="math display">\[
+(1-\epsilon)^{100} = e^{\log\left((1-\epsilon)^{100}\right)} = e^{ 100 \log (1-\epsilon)} \simeq e^{-100 \epsilon}
+\simeq  e^{-10^{-4}} \simeq 1 - 10^{-4}.
+\]</span></p>
+<p>Thus the correct probability of seeing a number of hits as large or larger than 7 in the 100 positions, if there is no epitope, is about 100 times the probability we wrongly calculated previously.</p>
+<div class="page-columns page-full"><p>Both computed probabilities <span class="math inline">\(10^{-6}\)</span> and <span class="math inline">\(10^{-4}\)</span> are smaller than standard significance thresholds (say, <span class="math inline">\(0.05, 0.01\)</span> or <span class="math inline">\(0.001\)</span>). The decision to reject the null of no epitope would have been the same. However if one has to stand up in court and defend the p-value to 8 significant digits as in some forensic court cases:<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> that is another matter. The adjusted p-value that takes into account the multiplicity of the test is the one that should be reported, and we will return to this important issue in <a href="06-chap.html" class="quarto-xref"><span>Chapter&nbsp;6</span></a>.</p><div class="no-row-height column-margin column-container"><li id="fn14"><p><sup>14</sup>&nbsp;This occurred in the examination of the forensic evidence in the OJ Simpson case.</p></li></div></div>
+</section>
+<section id="computing-probabilities-by-simulation" class="level4 unnumbered page-columns page-full">
+<h4 class="unnumbered anchored" data-anchor-id="computing-probabilities-by-simulation">Computing probabilities by simulation</h4>
+<p>In the case we just saw, the theoretical probability calculation was quite simple and we could figure out the result by an explicit calculation. In practice, things tend to be more complicated, and we are better to compute our probabilities using the <strong>Monte Carlo</strong> method: a computer simulation based on our generative model that finds the probabilities of the events we’re interested in. Below, we generate 100,000 instances of picking the maximum from 100 Poisson distributed numbers.</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/montecarlomethod_297e5c5954ae7ca46a77bc0cf0d06a2c">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>maxes <span class="ot">=</span> <span class="fu">replicate</span>(<span class="dv">100000</span>, {</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">max</span>(<span class="fu">rpois</span>(<span class="dv">100</span>, <span class="fl">0.5</span>))</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(maxes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>maxes
+    1     2     3     4     5     6     7     9 
+    7 23028 60840 14364  1604   141    15     1 </code></pre>
+</div>
+</div>
+<div class="page-columns page-full"><p>In 16 of 100000 trials, the maximum was 7 or larger. This gives the following approximation for <span class="math inline">\(P(X_{\text{max}}\geq 7)\)</span><a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>:</p><div class="no-row-height column-margin column-container"><li id="fn15"><p><sup>15</sup>&nbsp;In R, the expression <code>maxes &gt;= 7</code> evaluates into a logical vector of the same length as <code>maxes</code>, but with values of <code>TRUE</code> and <code>FALSE</code>. If we apply the function <code>mean</code> to it, that vector is converted into 0s and 1s, and the result of the computation is the fraction of 1s, which is the same as the fraction of <code>TRUE</code>s.</p></li></div></div>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/meanmaxes_0e567a23062c584f3bfab62f00b7ca3b">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>( maxes <span class="sc">&gt;=</span> <span class="dv">7</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.00016</code></pre>
+</div>
+</div>
+<div class="page-columns page-full"><p>which more or less agrees with our theoretical calculation. We already see one of the potential limitations of Monte Carlo simulations: the “granularity” of the simulation result is determined by the inverse of the number of simulations (100000) and so will be around 10^{-5}. Any estimated probability cannot be more precise than this granularity, and indeed the precision of our estimate will be a few multiples of that. Everything we have done up to now is only possible because we know the false positive rate per position, we know the number of patients assayed and the length of the protein, we suppose we have identically distributed independent draws from the model, and there are no unknown parameters.  This is an example of <strong>probability or generative modeling</strong>: all the parameters are known and the mathematical theory allows us to work by <strong>deduction</strong> in a <strong>top-down</strong> fashion.</p><div class="no-row-height column-margin column-container"><span class="">We postulated the Poisson distribution for the noise, pretending we knew all the parameters and were able to conclude through mathematical deduction.</span></div></div>
+<p>If instead we are in the more realistic situation of knowing the number of patients and the length of the proteins, but don’t know the distribution of the data, then we have to use <strong>statistical modeling</strong>. This approach will be developed in <a href="02-chap.html" class="quarto-xref"><span>Chapter&nbsp;2</span></a>. We will see that if we have only the data to start with, we first need to <strong>fit</strong> a reasonable distribution to describe it. However, before we get to this harder problem, let’s extend our knowledge of discrete distributions to more than binary, success-or-failure outcomes.</p>
+</section>
+</section>
+</section>
+<section id="sec-generative-multinomial" class="level2 page-columns page-full" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="sec-generative-multinomial"><span class="header-section-number">1.4</span> Multinomial distributions: the case of DNA</h2>
+<section id="more-than-two-outcomes." class="level4 unnumbered page-columns page-full">
+<h4 class="unnumbered anchored" data-anchor-id="more-than-two-outcomes.">More than two outcomes.</h4>
+<p>When modeling four possible outcomes, as for instance the boxes in <a href="#fig-Boxes4" class="quarto-xref">Figure&nbsp;<span>1.9</span></a> or when studying counts of the four nucleotides [A,C,G] and [T], we need to extend the [binomial] model.</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/fig-Boxes4_1511f010be79f236100f5caa31b70bb8">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-Boxes4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="imgs/BallsinBoxes4.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;1.9: The boxes represent four outcomes or levels of a discrete <strong>categorical</strong> variable. The box on the right represents the more likely outcome.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>Recall that when using the binomial, we can consider unequal probabilities for the two outcomes by assigning a probability <span class="math inline">\(p=P(1)=p_1\)</span> to the outcome 1 and <span class="math inline">\(1-p=p(0)=p_0\)</span> to the outcome 0. When there are more than two possible outcomes, say [A,C,G] and [T], we can think of throwing balls into boxes of differing sizes corresponding to different probabilities, and we can label these probabilities <span class="math inline">\(p_A,p_C,p_G,p_T\)</span>. Just as in the binomial case the sum of the probabilities of all possible outcomes is 1, <span class="math inline">\(p_A+p_C+p_G+p_T=1\)</span>.</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/unnamed-chunk-72_0d955746241f983157ffdce2a8b0f07d">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/devil.png" class="img-fluid figure-img" width="123"></p>
+<figcaption class="figure-caption">You are secretly meeting a continuous distribution here, the uniform distribution: <code>runif</code>.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Experiment with the random number generator that generates all possible numbers between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span> through the function called <code>runif</code>. Use it to generate a random variable with 4 levels (A, C, G, T) where <span class="math inline">\(p_{\text{A}}=\frac{1}{8}, p_{\text{C}}=\frac{3}{8}, p_{\text{G}}=\frac{3}{8}, p_{\text{T}}=\frac{1}{8}\)</span>.</p>
+</div>
+</div>
+<div class="page-columns page-full"><p><strong>Mathematical formulation.</strong> Multinomial distributions are the most important model for tallying counts and R uses a general formula to compute the probability of a <strong>multinomial</strong> vector of counts <span class="math inline">\((x_1,...,x_m)\)</span> for outcomes of <span class="math inline">\(n\)</span> draws from <span class="math inline">\(m\)</span> boxes with probabilities <span class="math inline">\(p_1,...,p_m\)</span>:<br>
+</p><div class="no-row-height column-margin column-container"><span class="">The first term reads: the joint probability of observing count <span class="math inline">\(x_1\)</span> in box 1 and <span class="math inline">\(x_2\)</span> in 2 and … <span class="math inline">\(x_m\)</span> in box m, given that box 1 has probability <span class="math inline">\(p_1\)</span>, box 2 has probability <span class="math inline">\(p_2\)</span>, … and box <span class="math inline">\(m\)</span> has probability <span class="math inline">\(p_m\)</span>.</span></div></div>
+<p><span class="math display">\[\begin{align}
+P(x_1,x_2,...,x_m)
+&amp;=\frac{n!}{\prod_{i=1}^m x_i!} \prod_{i=1}^m p_i^{x_i}\\
+&amp;={{n}\choose{x_1,x_2,...,x_m}} \; p_1^{x_1}\,p_2^{x_2}\cdots p_m^{x_m}.
+\end{align}\]</span></p>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="">The term in brackets is called the multinomial coefficient and is an abbreviation for <span class="math display">\[{n\choose x_1,x_2,...,x_m}=\frac{n!}{x_1!x_2!\cdots x_m!}.\]</span> So this is a generalization of the binomial coefficient – for <span class="math inline">\(m=2\)</span> it is the same as the binomial coefficient.</span></div></div>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="prp-generative-fourboxes" class="theorem proposition">
+<p><span class="theorem-title"><strong>Question 1.7 </strong></span>Suppose we have four boxes that are equally likely. Using the formula, what is the probability of observing 4 in the first box, 2 in the second box, and none in the two other boxes?</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+P(4,2,0,0)=\frac{6\times 5\times 4\times 3\times 2}{4\times 3\times 2 \times 2}
+\frac{1}{4^6}
+=\frac{15}{4^6}\simeq 0.0037.
+\]</span></p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/dmultinom_f5bc09411ac7770ef85d6d380e1d2d02">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dmultinom</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="at">prob =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.003662109</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>We often run simulation experiments to check whether the data we see are consistent with the simplest possible four-box model where each box has the same probability 1/4. In some sense it is the strawman (nothing interesting is happening). We’ll see more examples of this in <a href="02-chap.html" class="quarto-xref"><span>Chapter&nbsp;2</span></a>. Here we use a few R commands to generate such vectors of counts. First suppose we have 8 characters of four different, equally likely types:</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/pvec_f9727dea804a4fb79f6d4529cb8bff0f">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>pvec <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">4</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">rmultinom</span>(<span class="dv">1</span>, <span class="at">prob =</span> pvec, <span class="at">size =</span> <span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    3    1    3</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="prp-generative-tfun" class="theorem proposition">
+<p><span class="theorem-title"><strong>Question 1.8 </strong></span>Try the code without using the <code>t()</code> function; what does <code>t</code> stand for?</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="prp-generative-rmultinom" class="theorem proposition">
+<p><span class="theorem-title"><strong>Question 1.9 </strong></span>How do you interpret the difference between <code>rmultinom(n = 8, prob = pvec, size = 1)</code> and <code>rmultinom(n = 1, prob = pvec, size = 8)</code>? Hint: remember what we did in Sections <a href="#sec-generative-bernoulli" class="quarto-xref"><span>1.3.1</span></a> and <a href="#sec-generative-binomial" class="quarto-xref"><span>1.3.2</span></a>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-generative-SimulatingForPower" class="level3 page-columns page-full" data-number="1.4.1">
+<h3 data-number="1.4.1" class="anchored" data-anchor-id="sec-generative-SimulatingForPower"><span class="header-section-number">1.4.1</span> Simulating for power</h3>
+<p>Let’s see an example of using Monte Carlo for the <strong>multinomial</strong> in a way which is related to a problem scientists often have to solve when planning their experiments: how big a sample size do I need?</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/SampleSize_ce59e335247a5b2c9fb3b7d746755157">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/SampleSize.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div></div></div>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="">Ask a statistician about sample size, they will always tell you they need more data. The larger the sample size, the more sensitive the results. However lab work is expensive, so there is a tricky cost-benefit tradeoff to be considered. This is such an important problem that we have dedicated a whole chapter to it at the end of the book (<a href="13-chap.html" class="quarto-xref"><span>Chapter&nbsp;13</span></a>).</span></div></div>
+<p>The term <strong>power</strong> has a special meaning in statistics. It is the probability of detecting something if it <em>is</em> there, also called the <strong>true positive rate</strong>.</p>
+<p>Conventionally, experimentalists aim for a power of 80% (or more) when planning experiments. This means that if the same experiment is run many times, about 20% of the time it will fail to yield significant results even though it should.</p>
+<div class="page-columns page-full"><p>Let’s call <span class="math inline">\(H_0\)</span> the null hypothesis that the DNA data we have collected comes from a <em>fair</em> process, where each of the 4 nucleotides is equally likely <span class="math inline">\((p_A,p_C,p_G,p_T)=(0.25,0.25,0.25,0.25)\)</span>. Null here just means: the baseline, where nothing interesting is going on. It’s the strawman that we are trying to disprove (or “reject”, in the lingo of statisticians), so the null hypothesis should be such that deviations from it are interesting<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn16"><p><sup>16</sup>&nbsp;If you know a little biology, you will know that DNA of living organisms rarely follows that null hypothesis – so disproving it may not be all that interesting. Here we proceed with this null hypothesis because it allows us to illustrate the calculations, but it can also serve us as a reminder that the choice of a good null hypothesis (one whose rejection is interesting) requires scientific input.</p></li></div></div>
+<p>As you saw by running the R commands for 8 characters and 4 equally likely outcomes, represented by equal-sized boxes, we do not always get 2 in each box. It is impossible to say, from looking at just 8 characters, whether the nucleotides come from a fair process or not.</p>
+<p>Let’s determine if, by looking at a sequence of length <span class="math inline">\(n=20\)</span>, we can detect whether the original distribution of nucleotides is fair or whether it comes from some other (“alternative”) process.</p>
+<p>We generate 1000 simulations from the null hypothesis using the <code>rmultinom</code> function. We display only the first 11 columns to save space.</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/obsunder0start_75cd9a3d666dcea34b2db57763b7bef1">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>obsunder0 <span class="ot">=</span> <span class="fu">rmultinom</span>(<span class="dv">1000</span>, <span class="at">prob =</span> pvec, <span class="at">size =</span> <span class="dv">20</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(obsunder0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]    4 1000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>obsunder0[, <span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11]
+[1,]    6    5    6    8    4    6    2    7    5     4     4
+[2,]    6    6    3    7    3    3    8    4    3     3     5
+[3,]    3    3    6    2    8    3    5    7    4     7     6
+[4,]    5    6    5    3    5    8    5    2    8     6     5</code></pre>
+</div>
+</div>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/unnamed-chunk-73_fdb1f90fd46a968336eb535dd34fa24c">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/devil.png" class="img-fluid figure-img" width="123"></p>
+<figcaption class="figure-caption">Notice that the top of every column there is an index of the form <code>[,1][,2]...</code> These are the column indices. The rows are labeled <code>[1,][2,]...</code>. The object <code>obsunder0</code> is not a simple vector as those we have seen before, but an array of numbers in a matrix.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>Each column in the matrix <code>obsunder0</code> is a simulated instance. You can see that the numbers in the boxes vary a lot: some are as big as 8, whereas the expected value is 5=20/4.</p>
+<section id="sec-generative-createtest" class="level4 unnumbered page-columns page-full">
+<h4 class="unnumbered anchored" data-anchor-id="sec-generative-createtest">Creating a test</h4>
+<div class="page-columns page-full"><p>Remember: we know these values come from a fair process. Clearly, knowing the process’ expected values isn’t enough. We also need a measure of variability that will enable us to describe how much variability is expected and how much is too much. We use as our measure the following statistic, which is computed as the sum of the squares of the differences between the observed values and the expected values relative to the expected values. Thus, for each instance, </p><div class="no-row-height column-margin column-container"><span class="">This measure weights each of the square residuals relative to their expected values.</span></div></div>
+<p><span class="anchored-eq" data-anchor-id="eq-generative" id="eq-generative-stat"><span class="math display">\[
+{\tt stat}=\frac{(E_A-x_A)^2}{E_A}+
+\frac{(E_C-x_C)^2}{E_C}+
+\frac{(E_G-x_G)^2}{E_G}+
+\frac{(E_T-x_T)^2}{E_T}
+=\sum_i\frac{(E_i-x_i)^2}{E_i}
+\tag{1.1}\]</span></span></p>
+<p>How much do the first three columns of the generated data differ from what we expect? We get:</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/obsunder0look_6bdcdfc9c82056e91d385a954dcbe998">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>expected0 <span class="ot">=</span> pvec <span class="sc">*</span> <span class="dv">20</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((obsunder0[, <span class="dv">1</span>] <span class="sc">-</span> expected0)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> expected0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((obsunder0[, <span class="dv">2</span>] <span class="sc">-</span> expected0)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> expected0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((obsunder0[, <span class="dv">3</span>] <span class="sc">-</span> expected0)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> expected0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.2</code></pre>
+</div>
+</div>
+<p>The values of the measure can differ- you can look at a few more than 3 columns, we’re going to see how to study all 1,000 of them. To avoid repetitive typing, we encapsulate the formula for <code>stat</code>, <a href="#eq-generative-stat" class="quarto-xref">Equation&nbsp;<span>1.1</span></a>, in a function:</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/stat_e12427a64633ef8262a1fe837bae0248">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>stat <span class="ot">=</span> <span class="cf">function</span>(obsvd, <span class="at">exptd =</span> <span class="dv">20</span> <span class="sc">*</span> pvec) {</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>((obsvd <span class="sc">-</span> exptd)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> exptd)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="fu">stat</span>(obsunder0[, <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.2</code></pre>
+</div>
+</div>
+<p>To get a more complete picture of this variation, we compute the measure for all 1000 instances and store these values in a vector we call <code>S0</code>: it contains values generated under <span class="math inline">\(H_0\)</span>. We can consider the histogram of the <code>S0</code> values shown in <a href="#fig-histS0" class="quarto-xref">Figure&nbsp;<span>1.10</span></a> an estimate of our <strong>null distribution</strong>.</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/fig-histS0_e8ae2300426e5d81ab10afccd423b8e4">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>S0 <span class="ot">=</span> <span class="fu">apply</span>(obsunder0, <span class="dv">2</span>, stat)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(S0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   1.200   2.800   3.126   4.400  17.600 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(S0, <span class="at">breaks =</span> <span class="dv">25</span>, <span class="at">col =</span> <span class="st">"lavender"</span>, <span class="at">main =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-histS0" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-chap_files/figure-html/fig-histS0-1.png" class="img-fluid figure-img" width="320"></p>
+<figcaption class="figure-caption">Figure&nbsp;1.10: The histogram of simulated values <code>S0</code> of the statistic <code>stat</code> under the null (fair) distribution provides an approximation of the <strong>sampling distribution</strong> of the statistic <code>stat</code>.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/unnamed-chunk-74_b4d9dfc33fb0fcbb80e295ea5f699ec0">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/devil.png" class="img-fluid figure-img" width="123"></p>
+<figcaption class="figure-caption">The <code>apply</code> function is shorthand for a loop over the rows or columns of an array. Here the second argument, 2, indicates looping over the columns.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>The summary function shows us that <code>S0</code> takes on a spread of different values. From the simulated data we can approximate, for instance, the 95% quantile (a value that separates the smaller 95% of the values from the 5% largest values).</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/quantile_6bc21c2187a1a3084a9462cbe28f45e6">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>q95 <span class="ot">=</span> <span class="fu">quantile</span>(S0, <span class="at">probs =</span> <span class="fl">0.95</span>)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>q95</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>95% 
+7.6 </code></pre>
+</div>
+</div>
+<p>So we see that 5% of the <code>S0</code> values are larger than 7.6. We’ll propose this as our critical value for testing data and will reject the hypothesis that the data come from a fair process, with equally likely nucleotides, if the weighted sum of squares <code>stat</code> is larger than 7.6.</p>
+</section>
+<section id="determining-our-tests-power" class="level4 unnumbered page-columns page-full">
+<h4 class="unnumbered anchored" data-anchor-id="determining-our-tests-power">Determining our test’s power</h4>
+<p>We must compute the probability that our test—based on the weighted sum-of-square differences—will detect that the data in fact do not come from the null hypothesis. We compute the probability of rejecting by simulation. We generate 1000 simulated instances from an alternative process, parameterized by <code>pvecA</code>.</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/roulette-chunk-1_4839e9c2367deff323ba49299a221a7e">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/roulette.png" class="img-fluid figure-img" width="113"></p>
+</figure>
+</div>
+</div></div></div>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/alternativeA_1264f050a4eab2e573be6bb00943fbfb">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>pvecA <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">3</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">=</span> <span class="fu">rmultinom</span>(<span class="dv">1000</span>, <span class="at">prob =</span> pvecA, <span class="at">size =</span> <span class="dv">20</span>)</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(observed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]    4 1000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>observed[, <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5] [,6] [,7]
+[1,]   10    4    8    8    4    7    7
+[2,]    3   10    5    6    6    7    2
+[3,]    5    3    5    6    4    2    6
+[4,]    2    3    2    0    6    4    5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(observed, <span class="dv">1</span>, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.469 4.974 5.085 2.472</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>expectedA <span class="ot">=</span> pvecA <span class="sc">*</span> <span class="dv">20</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>expectedA</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.5 5.0 5.0 2.5</code></pre>
+</div>
+</div>
+<p>As with the simulation from the null hypothesis, the observed values vary considerably. The question is: how often (out of 1000 instances) will our test detect that the data depart from the null?</p>
+<p>The test doesn’t reject the first observation, (10, 3, 5, 2), because the value of the statistic is within the 95th percentile.</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/computestat1_80f59e24f18ff6e80b8cb54bc8fff771">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stat</span>(observed[, <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>S1 <span class="ot">=</span> <span class="fu">apply</span>(observed, <span class="dv">2</span>, stat)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>q95</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>95% 
+7.6 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(S1 <span class="sc">&gt;</span> q95)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 199</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>power <span class="ot">=</span> <span class="fu">mean</span>(S1 <span class="sc">&gt;</span> q95)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>power</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.199</code></pre>
+</div>
+</div>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/unnamed-chunk-75_7bdd52622cadf158e36700da23e53d8b">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/devil.png" class="img-fluid figure-img" width="123"></p>
+<figcaption class="figure-caption">We read the vertical line as <strong>given</strong> or <strong>conditional on</strong>.</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>Run across 1000 simulations, the test identified 199 as coming from an alternative distribution. We have thus computed that the probability <span class="math inline">\(P(\text{reject }H_0 \;|\; H_A)\)</span> is 0.199.</p>
+<p>With a sequence length of <span class="math inline">\(n = 20\)</span> we have a <em>power</em> of about 20% to detect the difference between the fair generating process and our <strong>alternative</strong>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In practice, as we mentioned, an acceptable value of power is <span class="math inline">\(0.8\)</span> or more. Repeat the simulation experiments and suggest a new sequence length <span class="math inline">\(n\)</span> that will ensure that the power is acceptable.</p>
+</div>
+</div>
+</section>
+<section id="classical-statistics-for-classical-data" class="level4 unnumbered page-columns page-full">
+<h4 class="unnumbered anchored" data-anchor-id="classical-statistics-for-classical-data">Classical statistics for classical data</h4>
+<p>We didn’t need to simulate the data using Monte Carlo to compute the 95th percentiles; there is an adequate theory to help us with the computations.</p>
+<p>Our statistic <code>stat</code> actually has a well-known distribution called the chi-square distribution (with 3 degrees of freedom) and written <span class="math inline">\({\chi}^2_3\)</span>.</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/fig-ProbaDiagram_af11bdf29675d934b913c2f92314ff2c">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-ProbaDiagram" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="imgs/ProbaDiagram.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;1.11: We have studied how a probability model has a distribution, which we call <span class="math inline">\(F\)</span>. <span class="math inline">\(F\)</span> often depends on parameters, which are–by convention–denoted by Greek letters, such as <span class="math inline">\(\theta\)</span>. The observed data are generated via the brown arrow and are represented by Latin letters, such as <span class="math inline">\(x\)</span>. The vertical bar in the probability computation stands for <strong>supposing that</strong> or <strong>conditional on</strong></figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>We will see in <a href="02-chap.html" class="quarto-xref"><span>Chapter&nbsp;2</span></a> how to compare distributions using Q-Q plots (see <a href="02-chap.html#fig-qqplot3-1" class="quarto-xref">Figure&nbsp;<span>2.8</span></a>). We could have used a more standard test instead of running a hand-made simulation. However, the procedure we’ve learned extends to many situations in which the chi-square distribution doesn’t apply. For instance, when some of the boxes have extremely low probabilities and their counts are mostly zero.</p>
+</section>
+</section>
+</section>
+<section id="summary-of-this-chapter" class="level2 page-columns page-full" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="summary-of-this-chapter"><span class="header-section-number">1.5</span> Summary of this chapter</h2>
+<p>We have used mathematical formulæ and R to compute probabilities of various discrete <em>events</em>, using a few basic distributions:</p>
+<p><strong>The <em>Bernoulli</em> distribution</strong> was our most basic building block – it is used to represent a single binary trial such as a coin flip. We can code the outcomes as 0 and 1. We call <span class="math inline">\(p\)</span> the probability of success (the 1 outcome).</p>
+<p><strong>The <em>binomial</em> distribution</strong> is used for the number of 1s in <span class="math inline">\(n\)</span> binary trials, and we can compute the probabilities of seeing <span class="math inline">\(k\)</span> successes using the R function <code>dbinom</code>. We also saw how to simulate a binomial eperiment with <span class="math inline">\(n\)</span> trials using the function <code>rbinom</code>.</p>
+<p><strong>The <em>Poisson</em> distribution</strong> is most appropriate for cases when <span class="math inline">\(p\)</span> is small (the 1s are rare). It has only one parameter <span class="math inline">\(\lambda\)</span>, and the Poisson distribution for <span class="math inline">\(\lambda=np\)</span> is approximately the same as the binomial distribution for <span class="math inline">\((n,p)\)</span> if <span class="math inline">\(p\)</span> is small. We used the Poisson distribution to model the number of randomly occurring false positives in an assay that tested for epitopes along a sequence, presuming that the per-position false positive rate <span class="math inline">\(p\)</span> was small. We saw how such a parametric model enabled us to compute the probabilities of extreme events, as long as we knew all the parameters.</p>
+<p><strong>The <em>multinomial</em> distribution</strong> is used for discrete events that have more than two possible outcomes or <strong>levels</strong>. The power example showed us how to use Monte Carlo simulations to decide how much data we need to collect if we want to test whether a multinomial model with equal probabilities is consistent with the data. We used probability distributions and probabilistic models to evaluate hypotheses about how our data were generated, by making assumptions about the generative models. We term the probability of seeing the data, given a hypothesis, a <strong>p-value</strong>. This is not the same as the probability that the hypothesis is true!</p>
+<div class="cell page-columns page-full" data-layout-align="center" data-hash="01-chap_cache/html/unnamed-chunk-76_daf4c60cdd2ec2e5456665c64a60ecad">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/devil.png" class="img-fluid figure-img" width="123"></p>
+<figcaption class="figure-caption"><span class="math inline">\(P(H_0\;|\;\text{data})\)</span> is not the same as a p-value <span class="math inline">\(P(\text{data}\;|\;H_0)\)</span>.</figcaption>
+</figure>
+</div>
+</div></div></div>
+</section>
+<section id="further-reading" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">1.6</span> Further reading</h2>
+<ul>
+<li><p>The elementary book by <span class="citation" data-cites="Freedman:1997">Freedman, Pisani, and Purves (<a href="16-chap.html#ref-Freedman:1997" role="doc-biblioref">1997</a>)</span> provides the best introduction to probability through the type of box models we mention here.</p></li>
+<li><p>The book by <span class="citation" data-cites="DEKM">Durbin et al. (<a href="16-chap.html#ref-DEKM" role="doc-biblioref">1998</a>)</span> covers many useful probability distributions and provides in its appendices a more complete view of the theoretical background in probability theory and its applications to sequences in biology.</p></li>
+<li><p>Monte Carlo methods are used extensively in modern statistics. <span class="citation" data-cites="Casella2009">Robert and Casella (<a href="16-chap.html#ref-Casella2009" role="doc-biblioref">2009</a>)</span> provides an introduction to these methods using R.</p></li>
+<li><p><a href="06-chap.html" class="quarto-xref"><span>Chapter&nbsp;6</span></a> will cover the subject of hypothesis testing. We also suggest <span class="citation" data-cites="Rice:2007">Rice (<a href="16-chap.html#ref-Rice:2007" role="doc-biblioref">2006</a>)</span> for more advanced material useful for the type of more advanced probability distributions, beta, gamma, exponentials we often use in data analyses.</p></li>
+</ul>
+</section>
+<section id="exercises" class="level2 page-columns page-full" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">1.7</span> Exercises</h2>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-generative-discretedistributions" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.1 </strong></span>&nbsp;</p>
+</div>
+</div>
+</div>
+<p>R can generate numbers from all known distributions. We now know how to generate random discrete data using the specialized R functions tailored for each type of distribution. We use the functions that start with an <code>r</code> as in <code>rXXXX</code>, where <code>XXXX</code> could be <code>pois</code>, <code>binom</code>, <code>multinom</code>. If we need a theoretical computation of a probability under one of these models, we use the functions <code>dXXXX</code>, such as <code>dbinom</code>, which computes the probabilities of events in the discrete binomial distribution, and <code>dnorm</code>, which computes the probability density function for the continuous normal distribution. When computing tail probabilities such as <span class="math inline">\(P(X&gt;a)\)</span> it is convenient to use the cumulative distribution functions, which are called <code>pXXXX</code>. Find two other discrete distributions that could replace the <code>XXXX</code> above.</p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-generative-probabilitymasscalculations" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.2 </strong></span>&nbsp;</p>
+</div>
+</div>
+</div>
+<p>In this chapter we have concentrated on <em>discrete</em> random variables, where the probabilities are concentrated on a countable set of values. How would you calculate the <em>probability mass</em> at the value <span class="math inline">\(X=2\)</span> for a binomial <span class="math inline">\(B(10, 0.3)\)</span> with <code>dbinom</code>? Use <code>dbinom</code> to compute the <em>cumulative</em> distribution at the value 2, corresponding to <span class="math inline">\(P(X\leq 2)\)</span>, and check your answer with another R function.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-22" class="callout-22-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/unnamed-chunk-54_dee07d4a2ca2dc23bff5990f987e1b20">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="dv">2</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2334744</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pbinom</span>(<span class="dv">2</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3827828</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.3</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3827828</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-generative-functions" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.3 </strong></span>&nbsp;</p>
+</div>
+</div>
+</div>
+<p>Whenever we note that we keep needing a certain sequence of commands, it’s good to put them into a function. The function body contains the instructions that we want to do over and over again, the function arguments take those things that we may want to vary. Write a function to compute the probability of having a maximum as big as <code>m</code> when looking across <code>n</code> Poisson variables with rate <code>lambda</code>.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-24" class="callout-24-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/poismax1_e5ad2c28f8cfac0f8d95fd7ea942a898">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>poismax <span class="ot">=</span> <span class="cf">function</span>(lambda, n, m) {</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>  epsilon <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">ppois</span>(m <span class="sc">-</span> <span class="dv">1</span>, lambda)</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span> <span class="sc">-</span> <span class="fu">exp</span>( <span class="sc">-</span>n <span class="sc">*</span> epsilon)</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a><span class="fu">poismax</span>(<span class="at">lambda =</span> <span class="fl">0.5</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">m =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0001002329</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">poismax</span>(<span class="at">lambda =</span> <span class="fu">mean</span>(e100), <span class="at">n =</span> <span class="dv">100</span>, <span class="at">m =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0001870183</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-generative-defaults" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.4 </strong></span>&nbsp;</p>
+</div>
+</div>
+</div>
+<p>Rewrite the function to have default values for its arguments (i.e., values that are used by it if the argument is not specified in a call to the function).</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-26-contents" aria-controls="callout-26" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-26" class="callout-26-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/poismax2_478e544778d1c74cc3b85c3880e70eac">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>poismax <span class="ot">=</span> <span class="cf">function</span>(lambda, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">m =</span> <span class="dv">7</span>) {</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span> <span class="sc">-</span> <span class="fu">exp</span>( <span class="sc">-</span>n <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">ppois</span>(m <span class="sc">-</span> <span class="dv">1</span>, lambda)))</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="fu">poismax</span>(<span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0001002329</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">poismax</span>(<span class="fl">0.5</span>, <span class="at">m =</span> <span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.43549e-07</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-generative-smallprobabilities" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.5 </strong></span>&nbsp;</p>
+</div>
+</div>
+</div>
+<p>In the epitope example, use a simulation to find the probability of having a maximum of 9 or larger in 100 trials. How many simulations do you need if you would like to prove that “the probability is smaller than 0.000001”?</p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-generative-distributions" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.6 </strong></span>&nbsp;</p>
+</div>
+</div>
+</div>
+<div class="page-columns page-full"><p>Use <code>?Distributions</code> in R to get a list of available distributions<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a>. Make plots of the probability mass or density functions for various distributions (using the functions named <code>dXXXX</code>), and list five distributions that are not discrete.</p><div class="no-row-height column-margin column-container"><li id="fn17"><p><sup>17</sup>&nbsp;These are just the ones that come with a basic R installation. There are more in additional packages, see the <a href="https://cran.r-project.org/web/views/Distributions.html">CRAN task view: Probability Distributions</a>.</p></li></div></div>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-generative-meanandvariances" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.7 </strong></span>&nbsp;</p>
+</div>
+</div>
+</div>
+<p>Generate 100 instances of a Poisson(3) random variable. What is the mean? What is the variance as computed by the R function <code>var</code>?</p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="exr-generative-genomefrequency" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.8 </strong></span>&nbsp;</p>
+</div>
+</div>
+</div>
+<p><em>C. elegans</em> genome nucleotide frequency: Is the mitochondrial sequence of <em>C. elegans</em> consistent with a model of equally likely nucleotides?</p>
+<ol type="a">
+<li><p>Explore the nucleotide frequencies of chromosome M by using a dedicated function in the <strong><a href="https://bioconductor.org/packages/Biostrings/">Biostrings</a></strong> package from Bioconductor.</p></li>
+<li><p>Test whether the <em>C. elegans</em> data is consistent with the uniform model (all nucleotide frequencies the same) using a simulation. Hint: This is our opportunity to use Bioconductor for the first time. Since Bioconductor’s package management is more tightly controlled than CRAN’s, we need to use a special <code>install</code> function (from the <strong><a href="https://cran.r-project.org/web/packages/BiocManager/">BiocManager</a></strong> package) to install Bioconductor packages.</p></li>
+</ol>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/biocex1_f3bb935c3c977f70c2d205e87c8f71a6">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="fu">c</span>(<span class="st">"Biostrings"</span>, <span class="st">"BSgenome.Celegans.UCSC.ce2"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After that, we can load the genome sequence package as we load any other R packages.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-31-contents" aria-controls="callout-31" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-31" class="callout-31-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/BSgenome.Celegans.UCSC.ce2_7f952d6560d61cb188d3802f8a672136">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"BSgenome.Celegans.UCSC.ce2"</span>)</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>Celegans</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>| BSgenome object for Worm
+| - organism: Caenorhabditis elegans
+| - provider: UCSC
+| - genome: ce2
+| - release date: Mar. 2004
+| - 7 sequence(s):
+|     chrI   chrII  chrIII chrIV  chrV   chrX   chrM                       
+| 
+| Tips: call 'seqnames()' on the object to get all the sequence names, call
+| 'seqinfo()' to get the full sequence info, use the '$' or '[[' operator to
+| access a given sequence, see '?BSgenome' for more information.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seqnames</span>(Celegans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "chrI"   "chrII"  "chrIII" "chrIV"  "chrV"   "chrX"   "chrM"  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>Celegans<span class="sc">$</span>chrM</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>13794-letter DNAString object
+seq: CAGTAAATAGTTTAATAAAAATATAGCATTTGGGTT...TATTTATAGATATATACTTTGTATATATCTATATTA</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(Celegans<span class="sc">$</span>chrM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "DNAString"
+attr(,"package")
+[1] "Biostrings"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Celegans<span class="sc">$</span>chrM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13794</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/Biostr_c13dcf1bd335c86eff46d9a3db43fc24">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"Biostrings"</span>)</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>lfM <span class="ot">=</span> <span class="fu">letterFrequency</span>(Celegans<span class="sc">$</span>chrM, <span class="at">letters=</span><span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"G"</span>, <span class="st">"T"</span>))</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>lfM</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   A    C    G    T 
+4335 1225 2055 6179 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(lfM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13794</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>lfM <span class="sc">/</span> <span class="fu">sum</span>(lfM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         A          C          G          T 
+0.31426707 0.08880673 0.14897782 0.44794838 </code></pre>
+</div>
+</div>
+<p>Create a random (each letter with equal probability) sequence of the same length as the <em>C. elegans</em> chromosome M:</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/rf_b13bac2e4c42f5b7f8fd5190715ebb4f">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">rmultinom</span>(<span class="dv">1</span>, <span class="fu">length</span>(Celegans<span class="sc">$</span>chrM), <span class="at">p =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">4</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,] 3409 3486 3476 3423</code></pre>
+</div>
+</div>
+<p>The expected frequencies are just</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/lengthM_2513bb20251bebb1b24787d144f153cc">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Celegans<span class="sc">$</span>chrM) <span class="sc">/</span> <span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3448.5</code></pre>
+</div>
+</div>
+<p>We’re going to compute a statistic that measures how close two multinomial outputs are to each other. We’ll take the average squared difference between observed (<code>o</code>) and expected (<code>e</code>) counts, scaled by <code>e</code>. We will call the function <code>oestat</code>.</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/oestat_b73c865fea0d5cc1023fcfae4774a948">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>oestat <span class="ot">=</span> <span class="cf">function</span>(o, e) {</span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>((o<span class="sc">-</span>e)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> e)</span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a>oe <span class="ot">=</span> <span class="fu">oestat</span>(<span class="at">o =</span> lfM, <span class="at">e =</span> <span class="fu">length</span>(Celegans<span class="sc">$</span>chrM) <span class="sc">/</span> <span class="dv">4</span>)</span>
+<span id="cb112-5"><a href="#cb112-5" aria-hidden="true" tabindex="-1"></a>oe</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4386.634</code></pre>
+</div>
+</div>
+<p>Is this larger than what randomness could explain? We already saw above a set of typical counts we could expect under the null model. But we need a whole set (distribution) of values. We compute these using the replicate function that evaluates a function many times. We run the following:</p>
+<div class="cell" data-layout-align="center" data-hash="01-chap_cache/html/oesim_5f125bb72c4f8ca4d3739ed605eb792b">
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>B <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">length</span>(Celegans<span class="sc">$</span>chrM)</span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>expected <span class="ot">=</span> <span class="fu">rep</span>(n <span class="sc">/</span> <span class="dv">4</span>, <span class="dv">4</span>)</span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>oenull <span class="ot">=</span> <span class="fu">replicate</span>(B,</span>
+<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">oestat</span>(<span class="at">e =</span> expected, <span class="at">o =</span> <span class="fu">rmultinom</span>(<span class="dv">1</span>, n, <span class="at">p =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">4</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-DEKM" class="csl-entry" role="listitem">
+Durbin, Richard, Sean Eddy, Anders Krogh, and Graeme Mitchison. 1998. <em>Biological Sequence Analysis</em>. Cambridge University Press.
+</div>
+<div id="ref-Freedman:1997" class="csl-entry" role="listitem">
+Freedman, David, Robert Pisani, and Roger Purves. 1997. <em>Statistics</em>. New York, NY: WW Norton.
+</div>
+<div id="ref-Rice:2007" class="csl-entry" role="listitem">
+Rice, John. 2006. <em>Mathematical Statistics and Data Analysis</em>. Cengage Learning.
+</div>
+<div id="ref-Casella2009" class="csl-entry" role="listitem">
+Robert, Christian, and George Casella. 2009. <em>Introducing <span>M</span>onte <span>C</span>arlo Methods with <span>R</span></em>. Springer Science &amp; Business Media.
+</div>
+</div>
+</section>
+<aside id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ol>
+</aside>
+
+<p>Page built on 2023-07-27 08:24:58.718075 using R version 4.3.0 (2023-04-21)</p></main> <!-- /main --></p><p class="build-date">
+Support for maintaining the online version of this book is provided by <a href="http://www.denbi.de">de.NBI</a>
+  <img src="imgs/denbi.png" style="vertical-align: text-top;height: 16px"><br>
+For website support please contact msmith@embl.de
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS_eq = new window.AnchorJS();
+  anchorJS_eq.options = {
+    placement: 'left',
+    class: 'eq-link',
+    icon: icon
+  };
+  anchorJS_eq.add('.anchored-eq');
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
