@@ -36,13 +36,17 @@ obs0 <- rmultinom(1000, samplesize, prob = prob0)
 
 exp0 = prob0 * samplesize
 
-stats <- function(exp, obs) {
-        sum(((exp - obs)^2) / exp)
+stat <- function(obsvd, exptd = exp0) {
+        sum((obsvd - exptd)^2 / exptd)
 }
 
-S0 <- apply(obs0, 2, stats, exp = exp0)
+S0 <- apply(obs0, 2, stat)
 
 q95 <- quantile(S0, probs = 0.95)
 
-obs1 <- alphabetFrequency(BSgenome.Celegans.UCSC.ce2$chrM)[1:4]
+prob1 <- alphabetFrequency(BSgenome.Celegans.UCSC.ce2$chrM, as.prob = T)[1:4]
 
+obs1 <- rmultinom(1000, samplesize, prob = prob1)
+
+S1 <- apply(obs1, 2, stat)
+power <- mean(S1 > q95)
