@@ -244,13 +244,29 @@
       ],
       "Hash": "18939552437a335b59fb381e508275d6"
     },
-    "Matrix": {
-      "Package": "Matrix",
-      "Version": "1.5-4.1",
+    "MASS": {
+      "Package": "MASS",
+      "Version": "7.3-60",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
+        "grDevices",
+        "graphics",
+        "methods",
+        "stats",
+        "utils"
+      ],
+      "Hash": "a56a6365b3fa73293ea8d084be0d9bb0"
+    },
+    "Matrix": {
+      "Package": "Matrix",
+      "Version": "1.6-0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "grDevices",
         "graphics",
         "grid",
         "lattice",
@@ -258,7 +274,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "38082d362d317745fb932e13956dccbb"
+      "Hash": "31262fd18481fab05c5e7258dac163ca"
     },
     "MatrixGenerics": {
       "Package": "MatrixGenerics",
@@ -425,6 +441,20 @@
       ],
       "Hash": "c089a619a7fae175d149d89164f8c7d8"
     },
+    "colorspace": {
+      "Package": "colorspace",
+      "Version": "2.1-0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "grDevices",
+        "graphics",
+        "methods",
+        "stats"
+      ],
+      "Hash": "f20c47fd52fae58b4e377c37bb8c335b"
+    },
     "cpp11": {
       "Package": "cpp11",
       "Version": "0.4.5",
@@ -502,6 +532,19 @@
         "utils"
       ],
       "Hash": "0b8a6d63c8770f02a8b5635f3c431e6b"
+    },
+    "lmtest": {
+      "Package": "lmtest",
+      "Version": "0.9-40",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "graphics",
+        "stats",
+        "zoo"
+      ],
+      "Hash": "c6fafa6cccb1e1dfe7f7d122efd6e6a7"
     },
     "matrixStats": {
       "Package": "matrixStats",
@@ -585,6 +628,23 @@
       ],
       "Hash": "40b74690debd20c57d93d8c246b305d4"
     },
+    "vcd": {
+      "Package": "vcd",
+      "Version": "1.4-11",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "MASS",
+        "R",
+        "colorspace",
+        "grDevices",
+        "grid",
+        "lmtest",
+        "stats",
+        "utils"
+      ],
+      "Hash": "bc6c0945029585c46a3a6854d8642ff8"
+    },
     "yaml": {
       "Package": "yaml",
       "Version": "2.3.7",
@@ -597,6 +657,21 @@
       "Version": "1.46.0",
       "Source": "Bioconductor",
       "Hash": "20158ef5adb641f0b4e8d63136f0e870"
+    },
+    "zoo": {
+      "Package": "zoo",
+      "Version": "1.8-12",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "grDevices",
+        "graphics",
+        "lattice",
+        "stats",
+        "utils"
+      ],
+      "Hash": "5c715954112b45499fb1dadc6ee6ee3e"
     }
   }
 }

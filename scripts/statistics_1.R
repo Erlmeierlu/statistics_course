@@ -50,3 +50,6 @@ obs1 <- rmultinom(1000, samplesize, prob = prob1)
 
 S1 <- apply(obs1, 2, stat)
 power <- mean(S1 > q95)
+
+
+
